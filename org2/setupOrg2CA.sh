@@ -4,7 +4,7 @@ sleep 1s
 mkdir -p ca/client/admin
 sleep 2s
 
-
+docker-compose -f org2CA.yml down --volumes
 ##################################################################
 ################# configuring the environment ####################
 ##################################################################

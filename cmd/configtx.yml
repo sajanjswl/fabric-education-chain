@@ -64,6 +64,9 @@ Organizations:
       Admins:
         Type: Signature
         Rule: "OR('org1MSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('org1MSP.peer')"
 
     # leave this flag set to true.
     AnchorPeers:
@@ -96,6 +99,9 @@ Organizations:
       Admins:
         Type: Signature
         Rule: "OR('org2MSP.admin')"
+      Endorsement:
+        Type: Signature
+        Rule: "OR('org2MSP.peer')"
 
     AnchorPeers:
       # AnchorPeers defines the location of peers which can be used
@@ -134,7 +140,7 @@ Capabilities:
     # prior releases.
     # Prior to enabling V1.3 channel capabilities, ensure that all
     # orderers and peers on a channel are at v1.3.0 or later.
-    V1_3: true
+    V2_0: true
 
   # Orderer capabilities apply only to the orderers, and may be safely
   # used with prior release peers.
@@ -145,7 +151,7 @@ Capabilities:
     # level, but which would be incompatible with orderers from prior releases.
     # Prior to enabling V1.1 orderer capabilities, ensure that all
     # orderers on a channel are at v1.1.0 or later.
-    V1_1: true
+    V2_0: true
 
   # Application capabilities apply only to the peer network, and may be safely
   # used with prior release orderers.
@@ -153,15 +159,15 @@ Capabilities:
   Application: &ApplicationCapabilities
     # V1.3 for Application enables the new non-backwards compatible
     # features and fixes of fabric v1.3.1.4.3
-    V1_3: true
+    V2_0: true
     # V1.2 for Application enables the new non-backwards compatible
     # features and fixes of fabric v1.2 (note, this need not be set if
     # later version capabilities are set)
-    V1_2: false
+  
     # V1.1 for Application enables the new non-backwards compatible
     # features and fixes of fabric v1.1 (note, this need not be set if
     # later version capabilities are set).
-    V1_1: false
+  
 
 ################################################################################
 #
@@ -190,6 +196,12 @@ Application: &ApplicationDefaults
     Admins:
       Type: ImplicitMeta
       Rule: "MAJORITY Admins"
+    LifecycleEndorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
+    Endorsement:
+      Type: ImplicitMeta
+      Rule: "MAJORITY Endorsement"
 
   Capabilities:
     <<: *ApplicationCapabilities
@@ -205,7 +217,7 @@ Orderer: &OrdererDefaults
 
   # Orderer Type: The orderer implementation to start
   # Available types are "solo" and "kafka"
-  OrdererType: solo
+  OrdererType: etcdraft
 
   Addresses:
     - orderer1-org0:7050
@@ -228,11 +240,11 @@ Orderer: &OrdererDefaults
     # max bytes will result in a batch larger than preferred max bytes.
     PreferredMaxBytes: 512 KB
 
-  Kafka:
-    # Brokers: A list of Kafka brokers to which the orderer connects
-    # NOTE: Use IP:port notation
-    Brokers:
-      - 127.0.0.1:9092
+  # Kafka:
+  #   # Brokers: A list of Kafka brokers to which the orderer connects
+  #   # NOTE: Use IP:port notation
+  #   Brokers:
+  #     - 127.0.0.1:9092
 
   # Organizations is the list of orgs which are defined as participants on
   # the orderer side of the network
@@ -299,21 +311,22 @@ Channel: &ChannelDefaults
 ################################################################################
 Profiles:
 
-  TwoOrgsOrdererGenesis:
-    <<: *ChannelDefaults
-    Orderer:
-      <<: *OrdererDefaults
-      Organizations:
-        - *org0
-      Capabilities:
-        <<: *OrdererCapabilities
-    Consortiums:
-      SampleConsortium:
-        Organizations:
-          - *org1
-          - *org2
+  # TwoOrgsOrdererGenesis:
+  #   <<: *ChannelDefaults
+  #   Orderer:
+  #     <<: *OrdererDefaults
+  #     Organizations:
+  #       - *org0
+  #     Capabilities:
+  #       <<: *OrdererCapabilities
+  #   Consortiums:
+  #     SampleConsortium:
+  #       Organizations:
+  #         - *org1
+  #         - *org2
   TwoOrgsChannel:
     Consortium: SampleConsortium
+    <<: *ChannelDefaults
     Application:
       <<: *ApplicationDefaults
       Organizations:
@@ -322,27 +335,69 @@ Profiles:
       Capabilities:
         <<: *ApplicationCapabilities
 
-  SampleDevModeKafka:
-    <<: *ChannelDefaults
-    Capabilities:
-      <<: *ChannelCapabilities
-    Orderer:
-      <<: *OrdererDefaults
-      OrdererType: kafka
-      Kafka:
-        Brokers:
-          - kafka.example.com:9092
+  # SampleDevModeKafka:
+  #   <<: *ChannelDefaults
+  #   Capabilities:
+  #     <<: *ChannelCapabilities
+  #   Orderer:
+  #     <<: *OrdererDefaults
+  #     OrdererType: kafka
+  #     Kafka:
+  #       Brokers:
+  #         - kafka.example.com:9092
 
-      Organizations:
-        - *org0
-      Capabilities:
-        <<: *OrdererCapabilities
-    Application:
-      <<: *ApplicationDefaults
-      Organizations:
-        - <<: *org0
-    Consortiums:
-      SampleConsortium:
-        Organizations:
-          - *org1
-          - *org2
+  #     Organizations:
+  #       - *org0
+  #     Capabilities:
+  #       <<: *OrdererCapabilities
+  #   Application:
+  #     <<: *ApplicationDefaults
+  #     Organizations:
+  #       - <<: *org0
+  #   Consortiums:
+  #     SampleConsortium:
+  #       Organizations:
+  #         - *org1
+  #         - *org2
+  
+
+
+  SampleMultiNodeEtcdRaft:
+        <<: *ChannelDefaults
+        Capabilities:
+            <<: *ChannelCapabilities
+        Orderer:
+            <<: *OrdererDefaults
+            OrdererType: etcdraft
+            EtcdRaft:
+                Consenters:
+                - Host: orderer1-org0
+                  Port: 7050
+                  ClientTLSCert: ../org0/orderers/orderer1/tls-msp/signcerts/cert.pem
+                  ServerTLSCert: ../org0/orderers/orderer1/tls-msp/signcerts/cert.pem
+                - Host: orderer2-org0
+                  Port: 8050
+                  ClientTLSCert: ../org0/orderers/orderer2/tls-msp/signcerts/cert.pem
+                  ServerTLSCert:  ../org0/orderers/orderer2/tls-msp/signcerts/cert.pem
+                - Host: orderer3-org0
+                  Port: 9050
+                  ClientTLSCert: ../org0/orderers/orderer3/tls-msp/signcerts/cert.pem
+                  ServerTLSCert:  ../org0/orderers/orderer3/tls-msp/signcerts/cert.pem
+            Addresses:
+                - orderer1-org0:7050
+                - orderer2-org0:8050
+                - orderer3-org0:9050
+
+            Organizations:
+            - *org0
+            Capabilities:
+                <<: *OrdererCapabilities
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+            - <<: *org0
+        Consortiums:
+            SampleConsortium:
+                Organizations:
+                - *org1
+                - *org2

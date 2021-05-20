@@ -2,7 +2,6 @@
 ###############       peer2 setup                  ##############
 #################################################################
 
-
 mkdir -p peers/peer2/assets/ca
 mkdir  peers/peer2/assets/tls-ca
 

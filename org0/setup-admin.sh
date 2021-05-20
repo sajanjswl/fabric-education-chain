@@ -28,9 +28,17 @@ echo "                                                                 "
 #################################################################
 
 
-mkdir orderer/msp/admincerts
+mkdir orderers/orderer1/msp/admincerts
+sleep 2s
+mkdir orderers/orderer2/msp/admincerts
+sleep 2s
+mkdir orderers/orderer3/msp/admincerts
+sleep 2s
 mkdir admin/msp/admincerts
 sleep 2s
-cp ./admin/msp/signcerts/cert.pem ./orderer/msp/admincerts/org0-admin-cert.pem
+cp ./admin/msp/signcerts/cert.pem ./orderers/orderer1/msp/admincerts/org0-admin-cert.pem
+cp ./admin/msp/signcerts/cert.pem ./orderers/orderer2/msp/admincerts/org0-admin-cert.pem
+cp ./admin/msp/signcerts/cert.pem ./orderers/orderer3/msp/admincerts/org0-admin-cert.pem
+sleep 2s
 cp ./admin/msp/signcerts/cert.pem ./admin/msp/admincerts/org0-admin-cert.pem
 sleep 2s

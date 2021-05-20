@@ -1,0 +1,9 @@
+{
+	"network-configs": {
+		"awsome-network": {
+			"name": "awsome-network",
+			"profile": "./connection-profile/awsome-network.json"
+		}
+	},
+	"license": "Apache-2.0"
+}

@@ -37,7 +37,7 @@
 #############################################################################
 
 # Version of config file
-version: 1.4.1
+version: 1.4.9
 
 # Server's listening port (default: 7054)
 port: 7054
@@ -318,7 +318,7 @@ csr:
         O: Hyperledger
         OU: Fabric
    hosts:
-     - a4c229c09b83
+     - b6b4af6e8b10
      - localhost
    ca:
       expiry: 131400h

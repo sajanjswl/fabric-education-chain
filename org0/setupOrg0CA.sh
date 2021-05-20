@@ -4,6 +4,8 @@ sleep 1s
 
 mkdir -p ca/client/admin
 sleep 2s
+
+docker-compose -f ordererCA.yml down --volumes
 #################################################################
 ################ configuring the environment ####################
 #################################################################
@@ -45,6 +47,29 @@ echo "#################################################################"
 echo "################ orderer1-org0 registered #######################"
 echo "#################################################################"
 echo "                                                                 "
+fabric-ca-client register -d --id.name orderer2-org0 --id.secret ordererpw --id.type orderer -u https://0.0.0.0:7053
+sleep 2s
+echo "                                                                 "
+echo "#################################################################"
+echo "################ orderer2-org0 registered #######################"
+echo "#################################################################"
+echo "                                                                 "
+fabric-ca-client register -d --id.name orderer3-org0 --id.secret ordererpw --id.type orderer -u https://0.0.0.0:7053
+sleep 2s
+echo "                                                                 "
+echo "#################################################################"
+echo "################ orderer1-org0 registered #######################"
+echo "#################################################################"
+echo "                                                                 "
+
+
+
+
+
+
+
+
+
 fabric-ca-client register -d --id.name admin-org0 --id.secret org0adminpw --id.type admin --id.attrs "hf.Registrar.Roles=client,hf.Registrar.Attributes=*,hf.Revoker=true,hf.GenCRL=true,admin=true:ecert,abac.init=true:ecert" -u https://0.0.0.0:7053
 sleep 2s
 echo "                                                                 "

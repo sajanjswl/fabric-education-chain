@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 # creates home directory for TLS-CA Server and TLS-CA client
+rm -r server/crypto
+sleep 2s 
+rm -r client/crypto
+sleep 2s
+
+
 mkdir -p server/crypto
 mkdir -p client/crypto
 sleep 2s
@@ -31,3 +37,8 @@ sleep 2s
 
 fabric-ca-client register -d --id.name orderer1-org0 --id.secret ordererPW --id.type orderer -u https://0.0.0.0:7052
 sleep 2s
+
+fabric-ca-client register -d --id.name orderer2-org0 --id.secret ordererPW --id.type orderer -u https://0.0.0.0:7052
+sleep 2s
+
+fabric-ca-client register -d --id.name orderer3-org0 --id.secret ordererPW --id.type orderer -u https://0.0.0.0:7052
