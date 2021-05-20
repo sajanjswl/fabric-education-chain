@@ -32,12 +32,16 @@ services:
       - DATABASE_USERNAME=hppoc
       - DATABASE_PASSWD=password
       - DISCOVERY_AS_LOCALHOST=false
+      - LOG_LEVEL_APP=debug
+      - LOG_LEVEL_DB=debug
+      - LOG_LEVEL_CONSOLE=info
+      - LOG_CONSOLE_STDOUT=true
     volumes:
       - ./awsome-network-configs/config.json:/opt/explorer/app/platform/fabric/config.json
       - ./awsome-network-configs/connection-profile:/opt/explorer/app/platform/fabric/connection-profile
       - ../org1:/tmp/crypto/org1
      # - walletstore:/opt/wallet
-    command: sh -c "sleep 16&& node /opt/explorer/main.js && tail -f /dev/null"
+    command: sh -c "sleep 16&& npm run app-start && tail -f /dev/null"
     ports:
       - 8090:8080
     networks:
