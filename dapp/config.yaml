@@ -1,0 +1,303 @@
+
+version: 1.0.0
+
+
+client:
+  organization: org1
+
+  logging:
+    level: info
+
+  cryptoconfig:
+    path: ${AWSOME_NETWORK_HOME}
+
+  credentialStore:
+    path: "/tmp/state-store"
+    cryptoStore:
+      path: /tmp/msp
+
+  # [Optional] BCCSP config for the client. Used by GO SDK.
+  BCCSP:
+    security:
+     enabled: true
+     default:
+      provider: "SW"
+     hashAlgorithm: "SHA2"
+     softVerify: true
+     level: 256
+
+  tlsCerts:
+    # [Optional]. Use system certificate pool when connecting to peers, orderers (for negotiating TLS) Default: false
+    systemCertPool: false
+
+    # [Optional]. Client key and cert for TLS handshake with peers and orderers
+    client:
+      key:
+        path: 
+      cert:
+        path: 
+
+#
+# [Optional]. But most apps would have this section so that channel objects can be constructed
+# based on the content below. If an app is creating channels, then it likely will not need this
+# section.
+#
+channels:
+
+ 
+  mychannel:
+
+    orderers:
+      - orderer1-org0
+      - orderer2-org0
+      - orderer3-org0
+    peers:
+      peer0-org1:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+      peer0-org2:
+        endorsingPeer: true
+        chaincodeQuery: true
+        ledgerQuery: true
+        eventSource: true
+
+#
+# list of participating organizations in this network
+#
+organizations:
+  org1:
+    mspid: org1MSP
+
+    # This org's MSP store (absolute path or relative to client.cryptoconfig)
+    cryptoPath: ${AWSOME_NETWORK_HOME}/org1/msp
+
+    peers:
+      - peer0-org1
+      - peer1-org1
+
+    # [Optional]. Certificate Authorities issue certificates for identification purposes in a Fabric based
+    # network. Typically certificates provisioning is done in a separate process outside of the
+    # runtime network. Fabric-CA is a special certificate authority that provides a REST APIs for
+    # dynamic certificate management (enroll, revoke, re-enroll). The following section is only for
+    # Fabric-CA servers.
+    certificateAuthorities:
+      - rca-org1
+      - ca-tls
+
+  # the profile will contain public information about organizations other than the one it belongs to.
+  # These are necessary information to make transaction lifecycles work, including MSP IDs and
+  # peers with a public URL to send transaction proposals. The file will not contain private
+  # information reserved for members of the organization, such as admin key and certificate,
+  # fabric-ca registrar enroll ID and secret, etc.
+  org2:
+    mspid: org2MSP
+
+    # This org's MSP store (absolute path or relative to client.cryptoconfig)
+    cryptoPath:  ${AWSOME_NETWORK_HOME}/org2/msp
+
+    peers:
+      - peer0-org2
+      - peer1-org2
+
+    certificateAuthorities:
+      - rca-org2
+
+  # # Orderer Org name
+  # ordererorg:
+  #     # Membership Service Provider ID for this organization
+  #     mspID: OrdererMSP
+
+  #     # Needed to load users crypto keys and certs for this org (absolute path or relative to global crypto path, DEV mode)
+  #     cryptoPath: ordererOrganizations/example.com/users/{username}@example.com/msp
+
+
+#
+# List of orderers to send transaction and channel create/update requests to. For the time
+# being only one orderer is needed. If more than one is defined, which one get used by the
+# SDK is implementation specific. Consult each SDK's documentation for its handling of orderers.
+#
+orderers:
+  _default:
+    # common orderer config items between all the orderers in  config
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+      # These parameters should be set in coordination with the keepalive policy on the server,
+      # as incompatible settings can result in closing of connection.
+      # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      keep-alive-permit: false
+      fail-fast: false
+      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+      allow-insecure: false
+
+  orderer1-org0:
+    # [Optional] Default: Infer from hostname
+    url:  orderer1-org0:7050
+
+    # these are standard properties defined by the gRPC library
+    # they will be passed in as-is to gRPC client constructor
+    grpcOptions:
+      #ssl-target-name-override: orderer.example.com
+      # These parameters should be set in coordination with the keepalive policy on the server,
+      # as incompatible settings can result in closing of connection.
+      # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+      #keep-alive-time: 0s
+      #keep-alive-timeout: 20s
+      #keep-alive-permit: false
+      #fail-fast: false
+      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+      #allow-insecure: false
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: ${AWSOME_NETWORK_HOME}/org0/orderers/orderer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+
+#
+# List of peers to send various requests to, including endorsement, query
+# and event listener registration.
+#
+peers:
+  _default:
+    #common grpc options between all the peers
+    grpcOptions:
+      # These parameters should be set in coordination with the keepalive policy on the server,
+      # as incompatible settings can result in closing of connection.
+      # When duration of the 'keep-alive-time' is set to 0 or less the keep alive client parameters are disabled
+      keep-alive-time: 0s
+      keep-alive-timeout: 20s
+      keep-alive-permit: false
+      fail-fast: false
+      # allow-insecure will be taken into consideration if address has no protocol defined, if true then grpc or else grpcs
+      allow-insecure: false
+
+  peer1-org1:
+    # this URL is used to send endorsement and query requests
+    # [Optional] Default: Infer from hostname
+    url: peer1-org1:7051
+
+    #grpcOptions:
+    #  ssl-target-name-override: peer0.org1.example.com
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: ${AWSOME_NETWORK_HOME}/org1/peers/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+
+  peer2-org1:
+    # this URL is used to send endorsement and query requests
+    url: peer2-org1:7051
+
+    #grpcOptions:
+    #  ssl-target-name-override: peer1.org1.example.com
+
+    tlsCACerts:
+      # Certificate location absolute path
+      path: ${AWSOME_NETWORK_HOME}/org1/peers/peer2/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+
+
+#
+# Fabric-CA is a special kind of Certificate Authority provided by Hyperledger Fabric which allows
+# certificate management to be done via REST APIs. Application may choose to use a standard
+# Certificate Authority instead of Fabric-CA, in which case this section would not be specified.
+#
+# certificateAuthorities:
+#   rca-org1:
+#     # [Optional] Default: Infer from hostname
+#     url: https://0.0.0.0:7054
+#     # [Optional] The optional server name for target override
+#     #grpcOptions:
+#     #  ssl-target-name-override: ca.org1.example.com
+#     tlsCACerts:
+#       # Comma-Separated list of paths
+#       path:  ${FAWSOME_NETWORK_HOME}/org1/admin/ca/org1-ca-cert.pem
+#       # Client key and cert for SSL handshake with Fabric CA
+#       client:
+#         key:
+#           path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key
+#         cert:
+#           path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt
+
+#     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+#     # needed to enroll and invoke new users.
+#     registrar:
+#       enrollId: admin
+#       enrollSecret: adminpw
+#     # [Optional] The optional name of the CA.
+#     caName: ca.org1.example.com
+#   tlsca.org1.example.com:
+#     # [Optional] Default: Infer from hostname
+#     url: https://ca.org1.example.com:7154
+#     tlsCACerts:
+#       # Comma-Separated list of paths
+#       path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org1.example.com/tlsca/tlsca.org1.example.com-cert.pem
+#       # Client key and cert for SSL handshake with Fabric CA
+#       client:
+#         key:
+#           path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key
+#         cert:
+#           path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt
+
+#     # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+#     # needed to enroll and invoke new users.
+#     registrar:
+#       enrollId: admin2
+#       enrollSecret: adminpw2
+#     # [Optional] The optional name of the CA.
+#     caName: tlsca.org1.example.com
+#   ca.org2.example.com:
+#     url: https://ca.org2.example.com:8054
+#     # [Optional] The optional server name for target override
+#     #grpcOptions:
+#     #  ssl-target-name-override: ca.org2.example.com
+#     tlsCACerts:
+#       # Comma-Separated list of paths
+#       path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/org2.example.com/tlsca/tlsca.org2.example.com-cert.pem
+#       # Client key and cert for SSL handshake with Fabric CA
+#       client:
+#         key:
+#           path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.key
+#         cert:
+#           path: ${FABRIC_SDK_GO_PROJECT_PATH}/${CRYPTOCONFIG_FIXTURES_PATH}/peerOrganizations/tls.example.com/users/User1@tls.example.com/tls/client.crt
+
+#      # Fabric-CA supports dynamic user enrollment via REST APIs. A "root" user, a.k.a registrar, is
+#      # needed to enroll and invoke new users.
+#     registrar:
+#       enrollId: admin
+#       enrollSecret: adminpw
+#     # [Optional] The optional name of the CA.
+#     caName: ca.org2.example.com
+
+
+###############################################################################
+#
+#    Operations section
+#    copied from Fabric's core.yaml
+###############################################################################
+operations:
+  # host and port for the operations server
+  listenAddress: 127.0.0.1:8080
+
+  # TLS configuration for the operations endpoint
+  tls:
+    # TLS enabled
+    enabled: false
+
+    # TODO replace cert.file, key.file and clientRootCAs.files to tlsCACerts as used elsewhere in this config file
+    # path to PEM encoded server certificate for the operations server
+    cert:
+      file:
+
+    # path to PEM encoded server key for the operations server
+    key:
+      file:
+
+    # require client certificate authentication to access all resources
+    clientAuthRequired: false
+
+    # paths to PEM encoded ca certificates to trust for client authentication
+    clientRootCAs:
+      files: []
+
