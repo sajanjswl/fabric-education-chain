@@ -1,5 +1,11 @@
 version: '2'
 
+networks:
+  mynetwork.com:
+    external:
+      name: cmd_awsome-network
+
+
 services:
   rca-org0:
     container_name: rca-org0
@@ -15,3 +21,5 @@ services:
       - ./ca/server:/tmp/hyperledger/fabric-ca
     ports:
       - 7053:7053
+    networks:
+      - mynetwork.com

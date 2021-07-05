@@ -46,3 +46,7 @@ services:
       - 8090:8080
     networks:
       - mynetwork.com
+
+
+
+      # http://localhost:8090/

@@ -2,7 +2,7 @@
 sudo rm ../org1/peers/peer1/assets/mychannel.block
 export COMPOSE_PROJECT_NAME=cmd
 docker-compose -f compose.yml down --volumes
-sleep 10s
+sleep 12s
 rm -r ../org0/orderers/orderer1/genesis.block
 rm -r ../org0/orderers/orderer2/genesis.block
 rm -r ../org0/orderers/orderer3/genesis.block
@@ -114,8 +114,8 @@ echo "                                                                "
 
 
 
-
 # docker exec -e "CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org2/admin/msp" -e "CORE_PEER_ADDRESS=peer1-org2:7051" cli-org2 peer lifecycle chaincode queryinstalled
+# 
 # sleep 2s
 # echo "                                                                "
 # echo "################################################################"

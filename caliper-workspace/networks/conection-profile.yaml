@@ -1,0 +1,161 @@
+name: Fabric
+version: "1.0"
+mutual-tls: false
+
+caliper:
+  blockchain: fabric
+  # command:
+  #   start: export FABRIC_VERSION=1.4.4;export FABRIC_CA_VERSION=1.4.4;docker-compose -f networks/fabric/docker-compose/2org1peercouchdb_solo_raft/docker-compose-tls.yaml up -d;sleep 10s
+  #   end: docker-compose -f networks/fabric/docker-compose/2org1peercouchdb_solo_raft/docker-compose-tls.yaml down;(test -z \"$(docker ps -aq)\") || docker rm $(docker ps -aq);(test -z \"$(docker images dev* -q)\") || docker rmi $(docker images dev* -q);rm -rf /tmp/hfc-*
+
+info:
+  Version: 2.1.0
+  Size: 2 Orgs with 1 Peer
+  Orderer: Raft
+  Distribution: Single Host
+  StateDB: LevelDB
+
+clients:
+  cli-org1:
+    client:
+      organization: org1
+      credentialStore:
+        path: /tmp/hfc-kvs/org1
+        cryptoStore:
+          path: /tmp/hfc-cvs/org1
+      clientPrivateKey:
+        path:  org1/user1/msp/keystore/d26d4671899aceedc2a72735a7c50fe5681ec2dbae2751fad760eb36647ca94f_sk
+      clientSignedCert:
+        path:  org1/user1/msp/signcerts/cert.pem
+
+  # cli-org2:
+  #   client:
+  #     organization: org2
+  #     credentialStore:
+  #       path: /tmp/hfc-kvs/org2
+  #       cryptoStore:
+  #         path: /tmp/hfc-cvs/org2
+  #     clientPrivateKey:
+  #       path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/keystore/priv_sk
+  #     clientSignedCert:
+  #       path: networks/fabric/pavan-v2.1/crypto-config/peerOrganizations/org2.example.com/users/User1@org2.example.com/msp/signcerts/User1@org2.example.com-cert.pem
+
+channels:
+  mychannel:
+    # configBinary: networks/fabric/pavan-v2.1/mychannel.tx
+    created: true
+    contracts: [{ "id": "basic_1.0:42f7fb34a6f8f08d6591ac0a494facd5b779072c80670ee4e70c45dcce1bd147", "version": "1" }]
+    definition:
+      capabilities: []
+      consortium: "SampleMultiNodeEtcdRaft"
+      msps: ["org1MSP", "org2MSP"]
+      version: 0
+    orderers:
+      - orderer1-org0
+      - orderer2-org0
+      - orderer3-org0
+    peers:
+      peer1-org1:
+        eventSource: true
+      peer1-org2:
+        eventSource: true
+
+organizations:
+  org1:
+    mspid: org1MSP
+    peers:
+      - peer0-org1
+      - peer1-org1
+    certificateAuthorities:
+      - rca-org1
+    adminPrivateKey:
+      path: org1/admin/msp/keystore/ca3a03a73639b7104b20c35db7367de586f3c5f85053983c5fdd236ec2e6b56e_sk
+    signedCert:
+      path: org1/admin/msp/signcerts/cert.pem
+
+  org2:
+    mspid: org2MSP
+    peers:
+      - peer0-org2
+      - peer1-org2
+    certificateAuthorities:
+      - rca-org2
+    adminPrivateKey:
+      path: org2/admin/msp/keystore/bb31835ca38926b6cbad9721cfeef25e94d697e8aa25c815f54496c4c1569a92_sk
+    signedCert:
+      path: org2/admin/msp/signcerts/cert.pem
+
+orderers:
+  orderer1-org0:
+    url: grpcs://orderer1-org0:7050
+    grpcOptions:
+      ssl-target-name-override: orderer1-org0
+    tlsCACerts:
+      path: org0/orderers/orderer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+  orderer2-org0:
+    url: grpcs://orderer2-org0:8050
+    grpcOptions:
+      ssl-target-name-override: orderer2-org0
+    tlsCACerts:
+      path: org0/orderers/orderer2/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+  orderer3-org0:
+    url: grpcs://orderer3-org0:9050
+    grpcOptions:
+      ssl-target-name-override: orderer3-org0
+    tlsCACerts:
+      path: org0/orderers/orderer3/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+
+peers:
+  peer0-org1:
+    url: grpcs://peer1-org1:7051
+    grpcOptions:
+      ssl-target-name-override: peer0-org1
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: org1/peers/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+
+  peer1-org1:
+    url: grpcs://peer2-org1:7051
+    grpcOptions:
+      ssl-target-name-override: peer1-org1
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: org1/peers/peer2/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+
+  peer0-org2:
+    url: grpcs://peer1-org2:7051
+    grpcOptions:
+      ssl-target-name-override: peer0-org2
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: org2/peers/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+  peer1-org2:
+    url: grpcs://peer2-org2:7051
+    grpcOptions:
+      ssl-target-name-override: peer1-org2
+      grpc.keepalive_time_ms: 600000
+    tlsCACerts:
+      path: org2/peers/peer2/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+
+certificateAuthorities:
+  rca-org1:
+    url: https://rca-org1:7054
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: org1/ca/client/admin/tls-ca-cert.pem
+    registrar:
+      # - enrollId: rca-org1-admin
+      #   enrollSecret: rca-org1-adminpw
+      - enrollId: user-org1
+        enrollSecret: org1UserPW
+
+  rca-org2:
+    url: https://rca-org2:7055
+    httpOptions:
+      verify: false
+    tlsCACerts:
+      path: org2/ca/client/admin/tls-ca-cert.pem
+    registrar:
+      - enrollId: rca-org1-admin
+        enrollSecret: rca-org2-adminpw

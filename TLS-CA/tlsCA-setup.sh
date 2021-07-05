@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 # creates home directory for TLS-CA Server and TLS-CA client
+docker network create cmd-awsome-network
+
+
 rm -r server/crypto
 sleep 2s 
 rm -r client/crypto
@@ -16,7 +19,7 @@ echo "###  starting fabric CA server ###"
 echo "##################################"
 echo "                                  "
 docker-compose -f tls-ca-server.yml up -d
-sleep 5s
+sleep 8s
 #copys the tls-CA server root ceritficate to tls-ca client for tls authentication
 cp ./server/crypto/ca-cert.pem  ./client/crypto/tls-ca-cert.pem
 sleep 2s

@@ -1,0 +1,120 @@
+name: Fabric
+version: "2.0.0"
+
+caliper:
+  blockchain: fabric
+  sutOptions:
+    mutualTls: false
+  # command:
+  #   start: docker-compose -f network/fabric-v1.1/2org2peergoleveldb/docker-compose-tls.yaml up -d;sleep 3s
+  #   end: docker-compose -f network/fabric-v1.1/2org2peergoleveldb/docker-compose-tls.yaml down;docker rm $(docker ps -aq);docker rmi $(docker images dev* -q)
+
+info:
+  Version: 1.1.0
+  Size: 2 Orgs
+  Orderer: Raft
+  Distribution: Single Host
+  StateDB: GoLevelDB
+
+channels:
+  - channelName: mychannel
+    create:
+      buildTransaction:
+        capabilities: []
+        consortium: 'SampleConsortium'
+        msps: ['org1MSP', 'org2MSP']
+        version: 0
+    # Array of contracts to be installed/instantiated on the named channel and available for use by the workload module
+    contracts:
+    - id: basic_1.0
+      contractID: basic_1.0
+      install:
+        version: v0
+        language: golang
+      #   path: marbles/go
+      #   metadataPath: src/marbles/go/metadata
+      # instantiate:
+      #   initFunction: init
+      #   initArguments: []
+      #   endorsementPolicy:
+      #     identities:
+      #     - role:
+      #         name: member
+      #         mspId: Org1MSP
+      #     - role:
+      #         name: member
+      #         mspId: Org2MSP
+      #     policy:
+      #       2-of:
+      #       - signed-by: 0
+      #       - signed-by: 1        
+
+organizations:
+  - mspid: org1MSP
+    identities:
+      certificates:
+      - name: 'admin-org1'
+        admin: true
+        clientPrivateKey:
+          pem: |-
+            -----BEGIN PRIVATE KEY-----
+            MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgKg5EYF+mrMuzxqjo
+            L0mXxTAe2W97BUknNY1MjAQXZc6hRANCAASMicT340ynwbcpOBN5zQxZAxkC0YXR
+            rfOFz1qzIO9BbI40KpE4y1l202U+E+noH6hcsHC/odRYG3WDDOA9l5wP
+            -----END PRIVATE KEY-----
+        clientSignedCert:
+          pem: |-
+            -----BEGIN CERTIFICATE-----
+            MIICqjCCAlCgAwIBAgIUJSDKQbQQNw0gAaD3Dq4h/mQZYCUwCgYIKoZIzj0EAwIw
+            YDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK
+            EwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMREwDwYDVQQDEwhyY2Etb3Jn
+            MTAeFw0yMTA2MjkxODI3MDBaFw0yMjA2MjkxODMyMDBaMGIxCzAJBgNVBAYTAlVT
+            MRcwFQYDVQQIEw5Ob3J0aCBDYXJvbGluYTEUMBIGA1UEChMLSHlwZXJsZWRnZXIx
+            DzANBgNVBAsTBmNsaWVudDETMBEGA1UEAxMKYWRtaW4tb3JnMTBZMBMGByqGSM49
+            AgEGCCqGSM49AwEHA0IABIyJxPfjTKfBtyk4E3nNDFkDGQLRhdGt84XPWrMg70Fs
+            jjQqkTjLWXbTZT4T6egfqFywcL+h1FgbdYMM4D2XnA+jgeUwgeIwDgYDVR0PAQH/
+            BAQDAgeAMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFBv1JJb2/Bv59dvEblZwqOxB
+            KTXdMB8GA1UdIwQYMBaAFLa2VBQnKtPoX5dYyLf7A8ojZDoYMCMGA1UdEQQcMBqC
+            GFNhamFucy1NYWNCb29rLVByby5sb2NhbDBdBggqAwQFBgcIAQRReyJhdHRycyI6
+            eyJoZi5BZmZpbGlhdGlvbiI6IiIsImhmLkVucm9sbG1lbnRJRCI6ImFkbWluLW9y
+            ZzEiLCJoZi5UeXBlIjoiY2xpZW50In19MAoGCCqGSM49BAMCA0gAMEUCIQD98onL
+            CoiIAhoZ94wI9Qxc8IcxivRZ1sMXmx2Jg4WvfgIgPJx+gKaoAUxuZKMQl9o/FdFK
+            wm9jlqtzLFicWAopxNs=
+            -----END CERTIFICATE-----
+    # connectionProfile:
+    #   # path: 'org1/connectionProfile/awsome-network.json'
+    #   discover: true
+  - mspid: org2MSP
+    connectionProfile:
+    identities:
+      certificates:
+      - name: 'admin-org1'
+        admin: true      
+        clientPrivateKey:
+          pem: |-
+            -----BEGIN PRIVATE KEY-----
+            MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQggzEUIWqwnNFcLbh7
+9Wzwo9fuL/6nCqKZf/XoGiGVmHmhRANCAAR2RQxN5KUzB2rBvBHNlEivMfKEUPHC
+SzlYaCBRQtG8F6EYnyUdEThvkTHcPnDUrdoiklNqN4XUKyk2I+DBHWBZ
+            -----END PRIVATE KEY-----
+        clientSignedCert:
+          pem: |-
+            -----BEGIN CERTIFICATE-----
+          MIICqjCCAlCgAwIBAgIUEcwlIEpHnku3PQ0z5syk5DcevNQwCgYIKoZIzj0EAwIw
+YDELMAkGA1UEBhMCVVMxFzAVBgNVBAgTDk5vcnRoIENhcm9saW5hMRQwEgYDVQQK
+EwtIeXBlcmxlZGdlcjEPMA0GA1UECxMGRmFicmljMREwDwYDVQQDEwhyY2Etb3Jn
+MjAeFw0yMTA2MjkxODI5MDBaFw0yMjA2MjkxODM0MDBaMGIxCzAJBgNVBAYTAlVT
+MRcwFQYDVQQIEw5Ob3J0aCBDYXJvbGluYTEUMBIGA1UEChMLSHlwZXJsZWRnZXIx
+DzANBgNVBAsTBmNsaWVudDETMBEGA1UEAxMKYWRtaW4tb3JnMjBZMBMGByqGSM49
+AgEGCCqGSM49AwEHA0IABHZFDE3kpTMHasG8Ec2USK8x8oRQ8cJLOVhoIFFC0bwX
+oRifJR0ROG+RMdw+cNSt2iKSU2o3hdQrKTYj4MEdYFmjgeUwgeIwDgYDVR0PAQH/
+BAQDAgeAMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFIeQeAb+rPYFYMowc9saPfuu
+ieRrMB8GA1UdIwQYMBaAFHTN0PYP/pRhG+tRCubHP6FMohMYMCMGA1UdEQQcMBqC
+GFNhamFucy1NYWNCb29rLVByby5sb2NhbDBdBggqAwQFBgcIAQRReyJhdHRycyI6
+eyJoZi5BZmZpbGlhdGlvbiI6IiIsImhmLkVucm9sbG1lbnRJRCI6ImFkbWluLW9y
+ZzIiLCJoZi5UeXBlIjoiY2xpZW50In19MAoGCCqGSM49BAMCA0gAMEUCIQDhj2Wr
+Rht4KheJ7uQwP5F2H6rnZwxHt2KtLoQwAJth7gIgfqnr2jcL8S7x3blgUCGUH8L3
+l0dkozI+KumaIlCJox8=
+            -----END CERTIFICATE-----
+      # path: './Org2ConnectionProfile.json'
+      discover: true

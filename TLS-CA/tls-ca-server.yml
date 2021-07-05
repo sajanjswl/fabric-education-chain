@@ -1,5 +1,11 @@
 version: '2'
 
+
+networks:
+  mynetwork.com:
+    external:
+      name: cmd_awsome-network
+
 services:
   ca-tls:
     container_name: ca-tls
@@ -15,3 +21,5 @@ services:
       - ./server:/tmp/hyperledger/fabric-ca
     ports:
       - 7052:7052
+    networks:
+      - mynetwork.com

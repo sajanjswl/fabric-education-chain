@@ -1,0 +1,63 @@
+{
+	"name": "awsome-network",
+	"version": "1.0.0",
+	"client": {
+		"tlsEnable": true,
+		"adminCredential": {
+			"id": "admin-org1",
+			"password": "org1AdminPW"
+		},
+		"enableAuthentication":false,
+		"organization": "org1MSP",
+		"connection": {
+			"timeout": {
+				"peer": {
+					"endorser": "300"
+				},
+				"orderer": "300"
+			}
+		}
+	},
+	"channels": {
+		"mychannel": {
+			"peers": {
+				"peer1-org1": {}
+			},
+			"connection": {
+				"timeout": {
+					"peer": {
+						"endorser": "6000",
+						"eventHub": "6000",
+						"eventReg": "6000"
+					}
+				}
+			}
+		}
+	},
+	"organizations": {
+		"org1MSP": {
+			"mspid": "org1MSP",
+			"fullpath": true,
+			"adminPrivateKey": {
+				"path": "/tmp/crypto/org1/admin/msp/keystore/d3c14cb08d50a9072356bfd144c3c5640b32013ad8fa017f066dbda79b640cf6_sk"
+			},
+			"peers": ["peer1-org1"],
+			"signedCert": {
+				"path": "/tmp/crypto/org1/admin/msp/signcerts/cert.pem"
+			}
+		}
+	},
+	"peers": {
+		"peer1-org1": {
+			"tlsCACerts": {
+				
+				"path": "/tmp/crypto/org1/peers/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem"
+			},
+			"url": "grpcs://peer1-org1:7051",
+			"eventUrl": "grpcs://peer1-org1:7053",
+			"grpcOptions": {
+				"ssl-target-name-override": "peer1-org1"
+			}
+		}
+	}
+}
