@@ -1,0 +1,9 @@
+{
+	"network-configs": {
+		"smart-campus": {
+			"name": "smart-campus",
+			"profile": "./connection-profile/smart-campus.json"
+		}
+	},
+	"license": "Apache-2.0"
+}

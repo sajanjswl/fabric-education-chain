@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # creates home directory for TLS-CA Server and TLS-CA client
-docker network create cmd-awsome-network
+docker network create cmd-smart-campus
 
 
 rm -r server/crypto

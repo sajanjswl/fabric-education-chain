@@ -1,20 +1,20 @@
 version: '2'
 
 networks:
-  awsome-network:
+  smart-campus:
 
 services:
 
   peer1-org1:
     container_name: peer1-org1
-    image: hyperledger/fabric-peer:latest
+    image: hyperledger/fabric-peer:2.3
     environment:
       - CORE_PEER_ID=peer1-org1
       - CORE_PEER_ADDRESS=peer1-org1:7051
       - CORE_PEER_LOCALMSPID=org1MSP
       - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/peer1/msp
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_awsome-network
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_smart-campus
       - FABRIC_LOGGING_SPEC=info
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/tmp/hyperledger/org1/peer1/tls-msp/signcerts/cert.pem
@@ -29,18 +29,18 @@ services:
       - /var/run:/host/var/run
       - ../org1/peers/peer1:/tmp/hyperledger/org1/peer1
     networks:
-      - awsome-network
+      - smart-campus
 
   peer2-org1:
     container_name: peer2-org1
-    image: hyperledger/fabric-peer:latest
+    image: hyperledger/fabric-peer:2.3
     environment:
       - CORE_PEER_ID=peer2-org1
       - CORE_PEER_ADDRESS=peer2-org1:7051
       - CORE_PEER_LOCALMSPID=org1MSP
       - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/peer2/msp
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_awsome-network
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_smart-campus
       - FABRIC_LOGGING_SPEC=info
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/tmp/hyperledger/org1/peer2/tls-msp/signcerts/cert.pem
@@ -56,18 +56,18 @@ services:
       - /var/run:/host/var/run
       - ../org1/peers/peer2:/tmp/hyperledger/org1/peer2
     networks:
-      - awsome-network
+      - smart-campus
 
   peer1-org2:
     container_name: peer1-org2
-    image: hyperledger/fabric-peer:latest
+    image: hyperledger/fabric-peer:2.3
     environment:
       - CORE_PEER_ID=peer1-org2
       - CORE_PEER_ADDRESS=peer1-org2:7051
       - CORE_PEER_LOCALMSPID=org2MSP
       - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org2/peer1/msp
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_awsome-network
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_smart-campus
       - FABRIC_LOGGING_SPEC=info
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/tmp/hyperledger/org2/peer1/tls-msp/signcerts/cert.pem
@@ -82,18 +82,18 @@ services:
       - /var/run:/host/var/run
       - ../org2/peers/peer1:/tmp/hyperledger/org2/peer1
     networks:
-      - awsome-network
+      - smart-campus
 
   peer2-org2:
     container_name: peer2-org2
-    image: hyperledger/fabric-peer:latest
+    image: hyperledger/fabric-peer:2.3
     environment:
       - CORE_PEER_ID=peer2-org2
       - CORE_PEER_ADDRESS=peer2-org2:7051
       - CORE_PEER_LOCALMSPID=org2MSP
       - CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org2/peer2/msp
       - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_awsome-network
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_smart-campus
       - FABRIC_LOGGING_SPEC=info
       - CORE_PEER_TLS_ENABLED=true
       - CORE_PEER_TLS_CERT_FILE=/tmp/hyperledger/org2/peer2/tls-msp/signcerts/cert.pem
@@ -109,11 +109,11 @@ services:
       - /var/run:/host/var/run
       - ../org2/peers/peer2:/tmp/hyperledger/org2/peer2
     networks:
-      - awsome-network
+      - smart-campus
 
   orderer1-org0:
     container_name: orderer1-org0
-    image: hyperledger/fabric-orderer:latest
+    image: hyperledger/fabric-orderer:2.3
     environment:
       - ORDERER_HOME=/tmp/hyperledger/orderer
       - ORDERER_HOST=orderer1-org0
@@ -138,11 +138,11 @@ services:
     volumes:
       - ../org0/orderers/orderer1:/tmp/hyperledger/org0/orderer/
     networks:
-      - awsome-network
+      - smart-campus
     
   orderer2-org0:
     container_name: orderer2-org0
-    image: hyperledger/fabric-orderer:latest
+    image: hyperledger/fabric-orderer:2.3
     environment:
       - ORDERER_HOME=/tmp/hyperledger/orderer
       - ORDERER_HOST=orderer2-org0
@@ -167,11 +167,11 @@ services:
     volumes:
       - ../org0/orderers/orderer2:/tmp/hyperledger/org0/orderer/
     networks:
-      - awsome-network
+      - smart-campus
 
   orderer3-org0:
     container_name: orderer3-org0
-    image: hyperledger/fabric-orderer:latest
+    image: hyperledger/fabric-orderer:2.3
     environment:
       - ORDERER_HOME=/tmp/hyperledger/orderer
       - ORDERER_HOST=orderer3-org0
@@ -196,11 +196,11 @@ services:
     volumes:
       - ../org0/orderers/orderer3:/tmp/hyperledger/org0/orderer/
     networks:
-      - awsome-network
+      - smart-campus
 
   cli-org1:
     container_name: cli-org1
-    image: hyperledger/fabric-tools:latest
+    image: hyperledger/fabric-tools:2.3
     tty: true
     stdin_open: true
     environment:
@@ -220,11 +220,11 @@ services:
       - ../org1/admin:/tmp/hyperledger/org1/admin
       - ../org1/peers/peer1/assets/chaincode-tar:/opt/gopath/src/github.com/hyperledger/fabric/org1
     networks:
-      - awsome-network
+      - smart-campus
 
   cli-org2:
     container_name: cli-org2
-    image: hyperledger/fabric-tools:latest
+    image: hyperledger/fabric-tools:2.3
     tty: true
     stdin_open: true
     environment:
@@ -244,7 +244,7 @@ services:
       - ../org2/admin:/tmp/hyperledger/org2/admin
       - ../org1/peers/peer1/assets/chaincode-tar:/opt/gopath/src/github.com/hyperledger/fabric/org2
     networks:
-      - awsome-network
+      - smart-campus
 
   ipfs:
     image: ipfs/go-ipfs:latest
@@ -256,7 +256,7 @@ services:
     #   - ./ipfs_staging../:/export
     #   - ./ipfs_data:/data/ipfs
     networks:
-      - awsome-network
+      - smart-campus
     ports:
       - 4001:4001
       - 8080:8080

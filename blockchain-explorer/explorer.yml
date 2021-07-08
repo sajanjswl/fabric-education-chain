@@ -6,7 +6,7 @@ volumes:
 networks:
   mynetwork.com:
     external:
-      name: cmd_awsome-network
+      name: cmd_smart-campus
 
 services:
   explorerdb.mynetwork.com:
@@ -37,8 +37,8 @@ services:
       - LOG_LEVEL_CONSOLE=info
       - LOG_CONSOLE_STDOUT=true
     volumes:
-      - ./awsome-network-configs/config.json:/opt/explorer/app/platform/fabric/config.json
-      - ./awsome-network-configs/connection-profile:/opt/explorer/app/platform/fabric/connection-profile
+      - ./smart-campus-configs/config.json:/opt/explorer/app/platform/fabric/config.json
+      - ./smart-campus-configs/connection-profile:/opt/explorer/app/platform/fabric/connection-profile
       - ../org1:/tmp/crypto/org1
      # - walletstore:/opt/wallet
     command: sh -c "sleep 16&& npm run app-start && tail -f /dev/null"

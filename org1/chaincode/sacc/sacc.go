@@ -12,14 +12,14 @@ import (
 	"github.com/jung-kurt/gofpdf"
 )
 
-const ipfsURL = "http://localhost:5001"
+const ipfsURL = "ipfs:5001"
 
 const (
-	Subject1Name = "Physics"
+	Subject1Name = "Data structure and Algorithms"
 	Subject1Code = "S0001"
-	Subject2Name = "Chemistry"
+	Subject2Name = "Object Oriented Programming"
 	Subject2Code = "S0002"
-	Subject3Name = "Mathmaitcs"
+	Subject3Name = "Computer Networks"
 	Subject3Code = "S0003"
 	Faculty1Code = "F0001"
 	Faculty2Code = "F0002"
@@ -119,17 +119,30 @@ func (s *SmartContract) InitLedger(ctx contractapi.TransactionContextInterface) 
 		}
 	}
 
-	subjects := []Subject{{FacultyCode: Faculty1Code, SubjectCode: Subject1Code, SubjectName: Subject1Name, SubjectMarks: 80},
+	subjects1 := []Subject{{FacultyCode: Faculty1Code, SubjectCode: Subject1Code, SubjectName: Subject1Name, SubjectMarks: 80},
 		{FacultyCode: Faculty2Code, SubjectCode: Subject2Code, SubjectName: Subject2Name, SubjectMarks: 90},
 		{FacultyCode: Faculty3Code, SubjectCode: Subject3Code, SubjectName: Subject3Name, SubjectMarks: 100},
 	}
 
+	subjects2 := []Subject{{FacultyCode: Faculty1Code, SubjectCode: Subject1Code, SubjectName: Subject1Name, SubjectMarks: 65},
+		{FacultyCode: Faculty2Code, SubjectCode: Subject2Code, SubjectName: Subject2Name, SubjectMarks: 66},
+		{FacultyCode: Faculty3Code, SubjectCode: Subject3Code, SubjectName: Subject3Name, SubjectMarks: 67},
+	}
+
+	subjects3 := []Subject{{FacultyCode: Faculty1Code, SubjectCode: Subject1Code, SubjectName: Subject1Name, SubjectMarks: 52},
+		{FacultyCode: Faculty2Code, SubjectCode: Subject2Code, SubjectName: Subject2Name, SubjectMarks: 55},
+		{FacultyCode: Faculty3Code, SubjectCode: Subject3Code, SubjectName: Subject3Name, SubjectMarks: 57},
+	}
+
 	students := []Student{
 		{FirstName: "Sajan", LastName: "Jaiswal", Branch: "CSE", RegistrationNumber: "1816128", BloodGroup: "A+",
-			MobileNumber: "+917064274923", Address: "White House, Motihari, Bihar", Subjects: subjects,
+			MobileNumber: "+917064274923", Address: "White House, Motihari, Bihar", Subjects: subjects1,
 		},
 		{FirstName: "Abhishek", LastName: "Jaiswal", Branch: "CSE", RegistrationNumber: "1816129",
-			BloodGroup: "B+", MobileNumber: "+918210791275", Address: "MidLand,Dimapur", Subjects: subjects,
+			BloodGroup: "B+", MobileNumber: "+918210791275", Address: "MidLand,Dimapur", Subjects: subjects2,
+		},
+		{FirstName: "Meso", LastName: "Z", Branch: "CSE", RegistrationNumber: "181630",
+			BloodGroup: "B+", MobileNumber: "+918210791275", Address: "MidLand,Dimapur", Subjects: subjects3,
 		},
 	}
 
@@ -262,27 +275,55 @@ func (s *SmartContract) GenrateReport(ctx contractapi.TransactionContextInterfac
 		return student.ReportHash, nil
 	}
 
-	pdf := newReport(student.FirstName+" "+student.LastName, student.RegistrationNumber)
+	pdf := newReport(student.FirstName, student.LastName, student.RegistrationNumber)
 	if pdf.Err() {
 		return "", fmt.Errorf("Failed creating PDF report: %s\n", pdf.Error())
 	}
 
-	subectNameArray := []string{Subject1Name, Subject2Name, Subject3Name, "Percentage"}
+	header1 := []string{"Award Programme", "Bachelor of Computer Science"}
 
-	if pdf = header(pdf, subectNameArray); pdf.Err() {
+	if pdf = header(pdf, header1); pdf.Err() {
+		return "", fmt.Errorf("Failed creating PDF report: %s\n", pdf.Error())
+	}
+	table1Contents := [][]string{{"Department", "Informatics"}, {"School", "School of Engineering and Informatics"},
+		{"Mode of attendance", "Full-time"},
+	}
+
+	if pdf = table(pdf, table1Contents); pdf.Err() {
+		return "", fmt.Errorf("Failed creating PDF report: %s\n", pdf.Error())
+	}
+	pdf.Ln(14)
+	pdf.SetFont("Times", "B", 18)
+	pdf.Cell(80, 10, "Academic Result")
+	pdf.Ln(-1)
+
+	header2 := []string{"Module Title", "Marks"}
+	if pdf = header(pdf, header2); pdf.Err() {
 		return "", fmt.Errorf("Failed creating PDF report: %s\n", pdf.Error())
 	}
 
-	aggregate := (student.Subjects[0].SubjectMarks + student.Subjects[1].SubjectMarks + student.Subjects[2].SubjectMarks) / 3
-	subjectMarksArray := [][]string{{
-		fmt.Sprintf("%.2f", student.Subjects[0].SubjectMarks),
-		fmt.Sprintf("%.2f", student.Subjects[1].SubjectMarks),
-		fmt.Sprintf("%.2f", student.Subjects[2].SubjectMarks),
-		fmt.Sprintf("%.2f", aggregate),
-	},
-	}
+	totalSum := student.Subjects[0].SubjectMarks + student.Subjects[1].SubjectMarks + student.Subjects[2].SubjectMarks
 
-	if pdf = table(pdf, subjectMarksArray); pdf.Err() {
+	outcome := "Fail"
+
+	if totalSum/3 >= 70 {
+		outcome = "First-Class Pass"
+	}
+	if totalSum/3 >= 60 && totalSum/3 <= 69 {
+		outcome = "Upper-Second-Class Pass"
+	}
+	if totalSum/3 >= 50 && totalSum/3 <= 59 {
+		outcome = "Lower-Second-Class Pass"
+	}
+	if totalSum/3 >= 40 && totalSum/3 <= 49 {
+		outcome = "Third-Class Pass"
+	}
+	table2Contents := [][]string{{"Data structure and Algorithms", fmt.Sprintf("%.2f", student.Subjects[0].SubjectMarks)},
+		{"Object Oriented Programming", fmt.Sprintf("%.2f", student.Subjects[1].SubjectMarks)},
+		{"Computer Networks", fmt.Sprintf("%.2f", student.Subjects[2].SubjectMarks)},
+		{"Overall Result", fmt.Sprintf("%.2f", totalSum)}, {"Outcome", outcome},
+	}
+	if pdf = table(pdf, table2Contents); pdf.Err() {
 		return "", fmt.Errorf("Failed creating PDF report: %s\n", pdf.Error())
 	}
 
@@ -332,6 +373,7 @@ func main() {
 	if err := chaincode.Start(); err != nil {
 		fmt.Printf("Error starting student chaincode: %s", err.Error())
 	}
+
 }
 
 func table(pdf *gofpdf.Fpdf, tbl [][]string) *gofpdf.Fpdf {
@@ -342,46 +384,51 @@ func table(pdf *gofpdf.Fpdf, tbl [][]string) *gofpdf.Fpdf {
 	// Every column gets aligned according to its contents.
 	align := []string{"L", "C", "L", "R", "R", "R"}
 	for _, line := range tbl {
-		for i, str := range line {
-			// Again, we need the CellFormat() method to create a visible border around the cell. We also use the alignStr parameter here to print the cell content either left-aligned or right-aligned.
-			pdf.CellFormat(40, 7, str, "1", 0, align[i], false, 0, "")
-		}
+		pdf.CellFormat(100, 7, line[0], "1", 0, align[0], false, 0, "")
+		pdf.CellFormat(100, 7, line[1], "1", 0, align[0], false, 0, "")
+
 		pdf.Ln(-1)
 	}
+
 	return pdf
 }
 
-func newReport(name, registrationNumber string) *gofpdf.Fpdf {
+func newReport(firstName, lastName, registrationNumber string) *gofpdf.Fpdf {
 
 	pdf := gofpdf.New("L", "mm", "Letter", "")
 
 	pdf.AddPage()
 
-	pdf.SetFont("Times", "B", 28)
-	pdf.Cell(80, 10, "Grade Sheet")
-	pdf.Ln(12)
-
-	pdf.SetFont("Times", "", 20)
+	pdf.SetFont("Times", "B", 22)
 	pdf.Cell(40, 10, time.Now().Format("Mon Jan 2, 2006"))
 	pdf.Ln(14)
 
-	pdf.SetFont("Times", "", 18)
-	pdf.Cell(80, 10, name)
-	pdf.Ln(16)
-	pdf.SetFont("Times", "", 18)
-	pdf.Cell(80, 10, registrationNumber)
-	pdf.Ln(18)
+	pdf.SetFont("Times", "B", 18)
+	pdf.Cell(80, 10, "Student Details")
+	pdf.Ln(-1)
 
+	pdf.SetFont("Times", "", 16)
+	pdf.Cell(80, 10, "Student ID: "+registrationNumber)
+	pdf.Ln(-1)
+	pdf.SetFont("Times", "", 16)
+	pdf.Cell(80, 10, "First Name: "+firstName)
+	pdf.Ln(-1)
+	pdf.SetFont("Times", "", 16)
+	pdf.Cell(80, 10, "Last Name: "+lastName)
+	pdf.Ln(14)
+
+	pdf.SetFont("Times", "B", 18)
+	pdf.Cell(80, 10, "Academic Details")
+	pdf.Ln(-1)
 	return pdf
 }
 
 func header(pdf *gofpdf.Fpdf, hdr []string) *gofpdf.Fpdf {
 	pdf.SetFont("Times", "B", 16)
 	pdf.SetFillColor(240, 240, 240)
-	for _, str := range hdr {
 
-		pdf.CellFormat(40, 7, str, "1", 0, "", true, 0, "")
-	}
+	pdf.CellFormat(100, 7, hdr[0], "1", 0, "", true, 0, "")
+	pdf.CellFormat(100, 7, hdr[1], "1", 0, "", true, 0, "")
 
 	pdf.Ln(-1)
 	return pdf
