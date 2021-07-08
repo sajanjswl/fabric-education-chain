@@ -1,0 +1,62 @@
+name: "Network"
+version: "2.3"
+# mutual-tls: false
+
+channels:
+  mychannel:
+    orderers:
+      - orderer1-org0
+      - orderer2-org0
+      - orderer3-org0
+    peers:
+      - peer1-org1
+      - peer1-org2
+
+organizations:
+  org1:
+    mspid: org1MSP
+    peers:
+      - peer1-org1
+
+  Org2:
+    mspid: org2MSP
+    peers:
+      - peer1-org2
+
+
+
+clients:
+  cli-org2:
+    client:
+      # tlsEnable: true
+      organization: org2
+      credentialStore:
+        path: /tmp/hfc-kvs/org2
+        cryptoStore:
+          path: /tmp/hfc-cvs/org2
+      clientPrivateKey:
+        path: /hyperledger/caliper/workspace/crypto/org2/user1/msp/keystore/397ec174c6eb55e9560178197ceb89b8730d6675b447a6edbd17934f55da5122_sk
+      clientSignedCert:
+        path: /hyperledger/caliper/workspace/crypto/org2/user1/msp/signcerts/cert.pem
+# orderers:
+#   orderer.example.com:
+#     url: grpcs://localhost:7050
+#     grpcOptions:
+#       ssl-target-name-override: orderer.example.com
+#     tlsCACerts:
+#       path: test/ordererOrganizations/example.com/orderers/orderer.example.com/tlscacerts/example.com-cert.pem
+
+peers:
+  # peer1-org1:
+  #   url: peer1-org1:7051
+  #   grpcOptions:
+  #     ssl-target-name-override: peer1-org1
+  #   tlsCACerts:
+  #     path: ..crypto/org1/peers/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+
+  peer1-org2:
+    url: grpcs://peer1-org2:7051
+    grpcOptions:
+      ssl-target-name-override: peer1-org2
+    tlsCACerts:
+      path: /hyperledger/caliper/workspace/crypto/org2/peers/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem

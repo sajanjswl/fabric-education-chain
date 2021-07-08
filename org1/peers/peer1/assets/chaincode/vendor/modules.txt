@@ -2,10 +2,6 @@
 github.com/PuerkitoBio/purell
 # github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578
 github.com/PuerkitoBio/urlesc
-# github.com/btcsuite/btcd v0.20.1-beta
-github.com/btcsuite/btcd/btcec
-# github.com/crackcomm/go-gitignore v0.0.0-20170627025303-887ab5e44cc3
-github.com/crackcomm/go-gitignore
 # github.com/go-openapi/jsonpointer v0.19.3
 github.com/go-openapi/jsonpointer
 # github.com/go-openapi/jsonreference v0.19.2
@@ -21,8 +17,6 @@ github.com/gobuffalo/packd
 github.com/gobuffalo/packd/internal/takeon/github.com/markbates/errx
 # github.com/gobuffalo/packr v1.30.1
 github.com/gobuffalo/packr
-# github.com/gogo/protobuf v1.3.1
-github.com/gogo/protobuf/proto
 # github.com/golang/protobuf v1.3.2
 github.com/golang/protobuf/proto
 github.com/golang/protobuf/ptypes
@@ -49,90 +43,22 @@ github.com/hyperledger/fabric-protos-go/ledger/queryresult
 github.com/hyperledger/fabric-protos-go/ledger/rwset
 github.com/hyperledger/fabric-protos-go/msp
 github.com/hyperledger/fabric-protos-go/peer
-# github.com/ipfs/go-cid v0.0.7
-github.com/ipfs/go-cid
-# github.com/ipfs/go-ipfs-api v0.2.0
-## explicit
-github.com/ipfs/go-ipfs-api
-github.com/ipfs/go-ipfs-api/options
-# github.com/ipfs/go-ipfs-files v0.0.8
-github.com/ipfs/go-ipfs-files
 # github.com/joho/godotenv v1.3.0
 github.com/joho/godotenv
-# github.com/jung-kurt/gofpdf v1.16.2
-## explicit
-github.com/jung-kurt/gofpdf
-# github.com/libp2p/go-buffer-pool v0.0.2
-github.com/libp2p/go-buffer-pool
-# github.com/libp2p/go-flow-metrics v0.0.3
-github.com/libp2p/go-flow-metrics
-# github.com/libp2p/go-libp2p-core v0.6.1
-github.com/libp2p/go-libp2p-core/crypto
-github.com/libp2p/go-libp2p-core/crypto/pb
-github.com/libp2p/go-libp2p-core/metrics
-github.com/libp2p/go-libp2p-core/peer
-github.com/libp2p/go-libp2p-core/peer/pb
-github.com/libp2p/go-libp2p-core/protocol
-github.com/libp2p/go-libp2p-core/record
-github.com/libp2p/go-libp2p-core/record/pb
-# github.com/libp2p/go-openssl v0.0.7
-github.com/libp2p/go-openssl
-github.com/libp2p/go-openssl/utils
 # github.com/mailru/easyjson v0.0.0-20190626092158-b2ccc519800e
 github.com/mailru/easyjson/buffer
 github.com/mailru/easyjson/jlexer
 github.com/mailru/easyjson/jwriter
-# github.com/minio/blake2b-simd v0.0.0-20160723061019-3f5f724cb5b1
-github.com/minio/blake2b-simd
-# github.com/minio/sha256-simd v0.1.1
-github.com/minio/sha256-simd
-# github.com/mitchellh/go-homedir v1.1.0
-github.com/mitchellh/go-homedir
-# github.com/mr-tron/base58 v1.2.0
-github.com/mr-tron/base58/base58
-# github.com/multiformats/go-base32 v0.0.3
-github.com/multiformats/go-base32
-# github.com/multiformats/go-base36 v0.1.0
-github.com/multiformats/go-base36
-# github.com/multiformats/go-multiaddr v0.3.0
-github.com/multiformats/go-multiaddr
-github.com/multiformats/go-multiaddr/net
-# github.com/multiformats/go-multiaddr-net v0.2.0
-github.com/multiformats/go-multiaddr-net
-# github.com/multiformats/go-multibase v0.0.3
-github.com/multiformats/go-multibase
-# github.com/multiformats/go-multihash v0.0.14
-github.com/multiformats/go-multihash
-# github.com/multiformats/go-varint v0.0.6
-github.com/multiformats/go-varint
 # github.com/rogpeppe/go-internal v1.3.0
 github.com/rogpeppe/go-internal/modfile
 github.com/rogpeppe/go-internal/module
 github.com/rogpeppe/go-internal/semver
-# github.com/spacemonkeygo/spacelog v0.0.0-20180420211403-2296661a0572
-github.com/spacemonkeygo/spacelog
-# github.com/spaolacci/murmur3 v1.1.0
-github.com/spaolacci/murmur3
-# github.com/whyrusleeping/tar-utils v0.0.0-20180509141711-8c6c8ba81d5c
-github.com/whyrusleeping/tar-utils
 # github.com/xeipuuv/gojsonpointer v0.0.0-20180127040702-4e3ac2762d5f
 github.com/xeipuuv/gojsonpointer
 # github.com/xeipuuv/gojsonreference v0.0.0-20180127040603-bd5ef7bd5415
 github.com/xeipuuv/gojsonreference
 # github.com/xeipuuv/gojsonschema v1.2.0
 github.com/xeipuuv/gojsonschema
-# go.opencensus.io v0.22.4
-go.opencensus.io/internal/tagencoding
-go.opencensus.io/metric/metricdata
-go.opencensus.io/metric/metricproducer
-go.opencensus.io/resource
-go.opencensus.io/stats
-go.opencensus.io/stats/internal
-go.opencensus.io/stats/view
-go.opencensus.io/tag
-# golang.org/x/crypto v0.0.0-20190621222207-cc06ce4a13d4
-golang.org/x/crypto/blake2s
-golang.org/x/crypto/sha3
 # golang.org/x/net v0.0.0-20190827160401-ba9fcec4b297
 golang.org/x/net/http/httpguts
 golang.org/x/net/http2
@@ -141,9 +67,7 @@ golang.org/x/net/idna
 golang.org/x/net/internal/timeseries
 golang.org/x/net/trace
 # golang.org/x/sys v0.0.0-20190710143415-6ec70d6a5542
-golang.org/x/sys/cpu
 golang.org/x/sys/unix
-golang.org/x/sys/windows
 # golang.org/x/text v0.3.2
 golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
@@ -151,6 +75,7 @@ golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
 golang.org/x/text/width
 # google.golang.org/genproto v0.0.0-20190425155659-357c62f0e4bb
+## explicit
 google.golang.org/genproto/googleapis/rpc/status
 # google.golang.org/grpc v1.23.0
 google.golang.org/grpc

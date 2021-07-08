@@ -1,0 +1,63 @@
+{
+	"name": "awsome-network",
+	"version": "1.0.0",
+	"client": {
+		"tlsEnable": true,
+		"adminCredential": {
+			"id": "admin-org1",
+			"password": "org1AdminPW"
+		},
+		"enableAuthentication":false,
+		"organization": "org1MSP",
+		"connection": {
+			"timeout": {
+				"peer": {
+					"endorser": "300"
+				},
+				"orderer": "300"
+			}
+		}
+	},
+	"channels": {
+		"mychannel": {
+			"peers": {
+				"peer1-org1": {}
+			},
+			"connection": {
+				"timeout": {
+					"peer": {
+						"endorser": "6000",
+						"eventHub": "6000",
+						"eventReg": "6000"
+					}
+				}
+			}
+		}
+	},
+	"organizations": {
+		"org1MSP": {
+			"mspid": "org1MSP",
+			"fullpath": true,
+			"adminPrivateKey": {
+				"path": "/hyperledger/caliper/workspace/crypto/org1/admin/msp/keystore/d882664899be2e428f5342cee50e986915f901c155725eb6eb66d88a4d8eda80_sk"
+			},
+			"peers": ["peer1-org1"],
+			"signedCert": {
+				"path": "/hyperledger/caliper/workspace/crypto/org1/admin/msp/signcerts/cert.pem"
+			}
+		}
+	},
+	"peers": {
+		"peer1-org1": {
+			"tlsCACerts": {
+				
+				"path": "/hyperledger/caliper/workspace/crypto/org1/peers/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem"
+			},
+			"url": "grpcs://peer1-org1:7051",
+			"eventUrl": "grpcs://peer1-org1:7053",
+			"grpcOptions": {
+				"ssl-target-name-override": "peer1-org1"
+			}
+		}
+	}
+}

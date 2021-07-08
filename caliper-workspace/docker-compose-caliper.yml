@@ -9,10 +9,11 @@ networks:
 services:
   caliper_2.2:
     container_name: caliper_2.2
-    image: hyperledger/caliper:0.4.3-unstable-20210407074822
-    command: launch manager --caliper-fabric-gateway-enabled
+    image: hyperledger/caliper:0.4.2
+    command: launch manager --caliper-fabric-gateway-enabled ---caliper-flow-only-test
     environment:
-      - CALIPER_BIND_SUT=fabric:2.2.0
+      - CALIPER_BIND_SUT=fabric:2.2
+      - CALIPER_WORKSPACE=/hyperledger/caliper/workspace
       - CALIPER_BENCHCONFIG=/hyperledger/caliper/workspace/benchmarks/myAssetBenchmark.yml
       - CALIPER_NETWORKCONFIG=/hyperledger/caliper/workspace/networks/networkConfig.yml
     volumes:

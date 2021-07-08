@@ -1,5 +1,5 @@
 name: Fabric
-version: "1.0"
+version: "2.0"
 mutual-tls: false
 
 caliper:
@@ -63,6 +63,19 @@ channels:
 organizations:
   org1:
     mspid: org1MSP
+    peers:
+      - peer0-org1
+      - peer1-org1
+    certificateAuthorities:
+      - rca-org1
+    adminPrivateKey:
+      path: org1/admin/msp/keystore/ca3a03a73639b7104b20c35db7367de586f3c5f85053983c5fdd236ec2e6b56e_sk
+    signedCert:
+      path: org1/admin/msp/signcerts/cert.pem
+
+
+  org2:
+    mspid: org2MSP
     peers:
       - peer0-org1
       - peer1-org1
