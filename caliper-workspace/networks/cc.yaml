@@ -1,0 +1,88 @@
+name: Fabric
+version: "2.0.0"
+mutual-tls: false
+
+channels:
+  mychannel:
+    created: true
+    contracts: [{ "id": "basic", "version": "1" }]
+    definition:
+      capabilities: []
+      consortium: "SampleMultiNodeEtcdRaft"
+      msps: ["org2MSP"]
+      version: 0
+    orderers:
+      - orderer1-org0
+      # - orderer2-org0
+      # - orderer3-org0
+    peers:
+      # peer1-org2:
+      #   endorsingPeer: true
+      #   chaincodeQuery: true
+      #   ledgerQuery: true
+      #   eventSource: true
+      - peer1-org2
+
+organizations:
+  # org1:
+  #   mspid: org1MSP
+  #   peers:
+  #     - peer1-org1
+
+  Org2:
+    mspid: org2MSP
+    peers:
+      - peer1-org2
+
+
+
+
+# client:
+#     organization: org1
+#     connection:
+#         timeout:
+#             peer:
+#                 endorser: '300'
+#             orderer: '300'
+
+clients:
+  cli-org2:
+    client:
+      tlsEnable: true
+      organization: org2
+      # connection:
+      #   timeout:
+      #     peer:
+      #       endorser: '300'
+      #     orderer: '300'
+      credentialStore:
+        path: /tmp/hfc-kvs/org2
+        cryptoStore:
+          path: /tmp/hfc-cvs/org2
+      clientPrivateKey:
+        path: /hyperledger/caliper/workspace/crypto/org2/admin/msp/keystore/ee9adcb65891aebc75ae0937321db9131177e76194db379a928f5b29647031a9_sk
+      clientSignedCert:
+        path: /hyperledger/caliper/workspace/crypto/org2/admin/msp/signcerts/cert.pem
+
+orderers:
+  orderer1-org0:
+    url: grpcs://orderer1-org0:7050
+    grpcOptions:
+      ssl-target-name-override: orderer1-org0
+    tlsCACerts:
+      path: /hyperledger/caliper/workspace/crypto/org0/orderers/orderer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+
+peers:
+  # peer1-org1:
+  #   url: peer1-org1:7051
+  #   grpcOptions:
+  #     ssl-target-name-override: peer1-org1
+  #   tlsCACerts:
+  #     path: ..crypto/org1/peers/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+
+  peer1-org2:
+    url: grpcs://peer1-org2:7051
+    grpcOptions:
+      ssl-target-name-override: peer1-org2
+    tlsCACerts:
+      path: /hyperledger/caliper/workspace/crypto/org2/peers/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem

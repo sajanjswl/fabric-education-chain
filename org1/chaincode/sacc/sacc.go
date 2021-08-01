@@ -14,6 +14,8 @@ import (
 
 const ipfsURL = "ipfs:5001"
 
+// const ipfsURL = "localhost:5001"
+
 const (
 	Subject1Name = "Data structure and Algorithms"
 	Subject1Code = "S0001"
@@ -321,7 +323,8 @@ func (s *SmartContract) GenrateReport(ctx contractapi.TransactionContextInterfac
 	table2Contents := [][]string{{"Data structure and Algorithms", fmt.Sprintf("%.2f", student.Subjects[0].SubjectMarks)},
 		{"Object Oriented Programming", fmt.Sprintf("%.2f", student.Subjects[1].SubjectMarks)},
 		{"Computer Networks", fmt.Sprintf("%.2f", student.Subjects[2].SubjectMarks)},
-		{"Overall Result", fmt.Sprintf("%.2f", totalSum)}, {"Outcome", outcome},
+		{"Overall Result", fmt.Sprintf("%.2f", float64(totalSum)/float64(len(student.Subjects))) + "%"},
+		{"Outcome", outcome},
 	}
 	if pdf = table(pdf, table2Contents); pdf.Err() {
 		return "", fmt.Errorf("Failed creating PDF report: %s\n", pdf.Error())
@@ -359,6 +362,17 @@ func (c *SmartContract) uploadReportOnIPFS(pipeReader *io.PipeReader) (string, e
 	}
 
 	return reportHash, nil
+}
+
+// DeleteAsset deletes a given asset from the world state.
+func (s *SmartContract) DeleteStudent(ctx contractapi.TransactionContextInterface, registrationNumber string) error {
+
+	student, err := s.QueryStudent(ctx, registrationNumber)
+	if err != nil {
+		return err
+	}
+
+	return ctx.GetStub().DelState(student.RegistrationNumber)
 }
 
 func main() {

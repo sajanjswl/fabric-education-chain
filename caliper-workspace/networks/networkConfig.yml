@@ -1,0 +1,64 @@
+name: Calier test
+version: "2.0.0"
+
+caliper:
+  blockchain: fabric
+  sutOptions:
+    mutualTls: true
+  # command:
+  #   start: docker-compose -f network/fabric-v1.1/2org2peergoleveldb/docker-compose-tls.yaml up -d;sleep 3s
+  #   end: docker-compose -f network/fabric-v1.1/2org2peergoleveldb/docker-compose-tls.yaml down;docker rm $(docker ps -aq);docker rmi $(docker images dev* -q)
+
+info:
+  Version: 1.1.0
+  Size: 2 Orgs
+  Orderer: Raft
+  Distribution: Single Host
+  StateDB: GoLevelDB
+
+channels:
+  - channelName: mychannel
+    contracts: [{ "id": "basic", "version": "1" }]
+
+         
+
+organizations:
+  # - mspid: org1MSP
+  #   identities:
+  #     certificates:
+  #     - name: user-org1
+  #       clientPrivateKey:
+  #         path: "../crypto/org1/user1/msp/keystore/e8fa7f67c364949e7231b1628b91412ab1f3a33357c1f72b8ba918fe0cc49159_sk"
+  #       clientSignedCert:
+  #         path: "../crypto/org1/user1/msp/signcerts/cert.pem"
+  #   connectionProfile:
+  #     path: ./cc.yaml
+  #     discover: true
+  
+  - mspid: org2MSP
+    identities:
+      certificates:
+      - name: user-org2
+        clientSignedCert:
+          # path: /hyperledger/caliper/workspace/crypto/org2/user1/msp/signcerts/cert.pem
+          path: /hyperledger/caliper/workspace/crypto/org2/admin/msp/signcerts/cert.pem
+        clientPrivateKey:
+          # path: /hyperledger/caliper/workspace/crypto/org2/user1/msp/keystore/397ec174c6eb55e9560178197ceb89b8730d6675b447a6edbd17934f55da5122_sk
+          path: /hyperledger/caliper/workspace/crypto/org2/admin/msp/keystore/ee9adcb65891aebc75ae0937321db9131177e76194db379a928f5b29647031a9_sk
+    connectionProfile:
+      # path: /hyperledger/caliper/workspace/networks/connection-profile/awsome-network.json
+      path: /hyperledger/caliper/workspace/networks/cc.yaml
+      discover: true
+
+
+  # - mspid: org2MSP
+  #   identities:
+  #     certificates:
+  #     - name: admin-org2
+  #       clientSignedCert:
+  #         path: /hyperledger/caliper/workspace/crypto/org2/msp/admincerts/org2-admin-cert.pem
+  #       clientPrivateKey:
+  #         path: /hyperledger/caliper/workspace/crypto/org2/admin/msp/keystore/ee9adcb65891aebc75ae0937321db9131177e76194db379a928f5b29647031a9_sk
+  #   connectionProfile:
+  #     path: /hyperledger/caliper/workspace/networks/cc.yaml
+  #     discover: true

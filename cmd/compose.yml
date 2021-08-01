@@ -127,7 +127,7 @@ services:
       - ORDERER_GENERAL_TLS_CERTIFICATE=/tmp/hyperledger/org0/orderer/tls-msp/signcerts/cert.pem
       - ORDERER_GENERAL_TLS_PRIVATEKEY=/tmp/hyperledger/org0/orderer/tls-msp/keystore/key.pem
       - ORDERER_GENERAL_TLS_ROOTCAS=[/tmp/hyperledger/org0/orderer/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem]
-      - ORDERER_GENERAL_LOGLEVEL=info
+      - ORDERER_GENERAL_LOGLEVEL=debug
       - ORDERER_DEBUG_BROADCASTTRACEDIR=data/logs
       # 
       - ORDERER_GENERAL_CLUSTER_CLIENTCERTIFICATE=/tmp/hyperledger/org0/orderer/tls-msp/signcerts/cert.pem
@@ -243,6 +243,7 @@ services:
       - ../org1/peers/peer1/assets/chaincode:/opt/gopath/src/github.com/hyperledger/fabric-samples/chaincode
       - ../org2/admin:/tmp/hyperledger/org2/admin
       - ../org1/peers/peer1/assets/chaincode-tar:/opt/gopath/src/github.com/hyperledger/fabric/org2
+      - ../org2/user1:/opt/gopath/src/github.com/hyperledger/fabric/org2/user1
     networks:
       - smart-campus
 

@@ -3,7 +3,7 @@
 
 
 
-docker exec -e "CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/admin/msp" -e "CORE_PEER_ADDRESS=peer1-org1:7051" cli-org1 peer lifecycle chaincode approveformyorg -o orderer1-org0:7050  --channelID mychannel --name basic --version 1.0 --package-id basic_1.0:ff54eebe63611ce3f035834941f67354256275992b5b4c1184307efe6a46c2d0 --sequence 1 --tls --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+docker exec -e "CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/admin/msp" -e "CORE_PEER_ADDRESS=peer1-org1:7051" cli-org1 peer lifecycle chaincode approveformyorg -o orderer1-org0:7050  --channelID mychannel --name basic --version 1.0 --package-id basic_1.0:80a86546503455736573ad3310a83596dc14f1a0ff2befaca3e07222d1355520 --sequence 1 --tls --cafile /tmp/hyperledger/org1/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
 sleep 2s
 echo "                                                                "
 echo "################################################################"
@@ -13,7 +13,7 @@ echo "                                                                "
 
 
 
-docker exec -e "CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org2/admin/msp" -e "CORE_PEER_ADDRESS=peer1-org2:7051" cli-org2 peer lifecycle chaincode approveformyorg -o orderer1-org0:7050  --channelID mychannel --name basic --version 1.0 --package-id basic_1.0:ff54eebe63611ce3f035834941f67354256275992b5b4c1184307efe6a46c2d0 --sequence 1 --tls --cafile /tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
+docker exec -e "CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org2/admin/msp" -e "CORE_PEER_ADDRESS=peer1-org2:7051" cli-org2 peer lifecycle chaincode approveformyorg -o orderer1-org0:7050  --channelID mychannel --name basic --version 1.0 --package-id basic_1.0:80a86546503455736573ad3310a83596dc14f1a0ff2befaca3e07222d1355520 --sequence 1 --tls --cafile /tmp/hyperledger/org2/peer1/tls-msp/tlscacerts/tls-0-0-0-0-7052.pem
 sleep 2s
 echo "                                                                "
 echo "################################################################"
@@ -84,7 +84,7 @@ echo "                                                                "
 # echo "################################################################"
 # echo "                                                                "
 
-#  docker exec ipfs ipfs cat bafyreibkgtfrdsxwvaean5niv6klvgoflzm74k6ntcuikyz5jgduzuk574
+#  docker exec ipfs ipfs cat QmNrdbH3yW3uCnKRr92WZZndcUbK8TqF7bc3tFBbivEegE
 
 # docker exec -e "CORE_PEER_MSPCONFIGPATH=/tmp/hyperledger/org1/admin/msp" -e "CORE_PEER_ADDRESS=peer1-org1:7051" cli-org1 peer channel getinfo -c mychannel
 # sleep 2s

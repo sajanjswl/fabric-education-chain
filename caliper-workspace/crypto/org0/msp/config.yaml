@@ -1,0 +1,16 @@
+NodeOUs:
+  Enable: true
+  ClientOUIdentifier:
+    Certificate: cacerts/org0-ca-cert.pem
+    OrganizationalUnitIdentifier: client
+  PeerOUIdentifier:
+    Certificate: cacerts/org0-ca-cert.pem
+    OrganizationalUnitIdentifier: peer
+  
+  OrdererOUIdentifier:
+    Certificate: cacerts/org0-ca-cert.pem
+    OrganizationalUnitIdentifier: orderer
+
+  AdminOUIdentifier:
+    Certificate: cacerts/org0-ca-cert.pem
+    OrganizationalUnitIdentifier: admin
